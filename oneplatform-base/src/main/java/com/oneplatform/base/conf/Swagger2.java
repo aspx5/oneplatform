@@ -3,6 +3,7 @@ package com.oneplatform.base.conf;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import com.jeesuite.common.util.ResourceUtils;
+import com.oneplatform.base.util.ModuleMetadataHolder;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -31,7 +33,15 @@ public class Swagger2 {
 
     @Bean
     public Docket createRestApi(@Value("${swagger.enable:false}") boolean enable) {
-    	String basePackage = ResourceUtils.getProperty("controller.base-package","com.oneplatform");
+    	String basePackage = ResourceUtils.getProperty("controller.base-package");
+    	if(StringUtils.isBlank(basePackage) && ModuleMetadataHolder.getCurrent() != null){
+    		basePackage = ModuleMetadataHolder.getCurrent().getApiBasePackages();
+    	}
+    	
+    	if(StringUtils.isBlank(basePackage)){
+    		basePackage = "com.oneplatform";
+    	}
+    	
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .enable(enable)

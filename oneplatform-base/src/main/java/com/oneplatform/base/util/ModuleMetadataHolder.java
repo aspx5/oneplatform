@@ -57,6 +57,7 @@ import io.swagger.annotations.ApiOperation;
 public class ModuleMetadataHolder {
 
 	private static List<ModuleMetadata> metadatas = new ArrayList<>();
+	private static ModuleMetadata currentModuleMetadata;
 	
 	private synchronized static void scanApiInfos(ModuleMetadata metadata) {
 
@@ -180,7 +181,9 @@ public class ModuleMetadataHolder {
 				metadata.setIdentifier(GlobalContants.MODULE_NAME);
 				scanApiInfos(metadata);
 				metadatas.add(metadata);
+				currentModuleMetadata = metadata;
 			}
+			
 			DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
 			Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("classpath*:metadata.json");
 			if(resources == null)return;
@@ -189,6 +192,7 @@ public class ModuleMetadataHolder {
 				ModuleMetadata metadata = JSON.parseObject(contents, ModuleMetadata.class);
 				scanApiInfos(metadata);
 				metadatas.add(metadata);
+				if(currentModuleMetadata == null)currentModuleMetadata = metadata;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -203,5 +207,12 @@ public class ModuleMetadataHolder {
 		}
      return metadatas;
 	}
+
+
+	public static ModuleMetadata getCurrent() {
+		return currentModuleMetadata;
+	}
+	
+	
 
 }

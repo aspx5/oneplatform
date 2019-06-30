@@ -2,5 +2,5 @@
     "type": "service",
     "name": "微信服务",
 	"identifier": "weixin-service",
-	"apiBasePackages": "com.oneplatform.cms.controller"
+	"apiBasePackages": "com.oneplatform.weixin.controller"
 }

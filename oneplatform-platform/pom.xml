@@ -206,6 +206,11 @@
 		    <artifactId>cms-service</artifactId>
 		    <version>${project.parent.version}</version>
 		</dependency>
+		<dependency>
+		    <groupId>com.jeesuite.oneplatform</groupId>
+		    <artifactId>shenghuotong</artifactId>
+		    <version>${project.parent.version}</version>
+		</dependency>
 		<!-- 业务模块 end -->
 
 	</dependencies>
